@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple Vision Pro | Landing</title>
+  <style>
+    :root {
+      --bg: #000;
+      --text: #f5f5f7;
+      --muted: #a1a1a6;
+      --accent: #2997ff;
+      --card: rgba(28, 28, 30, 0.6);
+      --line: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1b1b1d 0%, var(--bg) 45%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #0071e3, #5ac8fa);
+      transition: width 0.1s linear;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand { font-weight: 700; letter-spacing: 0.4px; }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(41, 151, 255, 0.25);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    section {
+      min-height: 100vh;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 120px 20px 60px;
+      display: grid;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .hero {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 4.8rem);
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 3.2rem);
+      margin-bottom: 14px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 1.05rem;
+      max-width: 55ch;
+    }
+
+    .hero-copy p { margin-bottom: 28px; }
+
+    .product {
+      width: min(100%, 520px);
+      justify-self: center;
+      filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.5));
+      animation: float 4s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      transform: translateY(40px) scale(0.98);
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: all 0.9s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .visible {
+      opacity: 1 !important;
+      transform: translateY(0) scale(1) !important;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      opacity: 0;
+      transform: scale(0.94);
+      transition: all 0.9s ease;
+    }
+
+    .cta {
+      text-align: center;
+      padding-bottom: 120px;
+    }
+
+    .price {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin: 12px 0 24px;
+      color: #fff;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 20px 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero, .gallery, .grid-3 { grid-template-columns: 1fr; }
+      section { padding-top: 95px; }
+      .product { max-width: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress"><span id="progress-bar"></span></div>
+
+  <header>
+    <nav>
+      <div class="brand"> Apple</div>
+      <button class="btn primary">Comprar ahora</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy reveal">
+      <h1>Vision Pro</h1>
+      <p>
+        El nuevo ordenador espacial de Apple. Una experiencia inmersiva para trabajar, crear y entretenerte como nunca.
+      </p>
+      <button class="btn primary">Reservar</button>
+    </div>
+
+    <img
+      class="product reveal"
+      src="https://www.apple.com/v/apple-vision-pro/a/images/overview/hero/portrait_base__f7xkhuxv92ai_large.jpg"
+      alt="Apple Vision Pro"
+    />
+  </section>
+
+  <section>
+    <div class="reveal">
+      <h2>Diseñado para sorprender</h2>
+      <p>Combinación de aluminio, cristal laminado y una interfaz intuitiva con control por ojos, manos y voz.</p>
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <h3>Micro‑OLED 4K</h3>
+        <p>Más de 23 millones de píxeles para una nitidez espectacular en cada detalle.</p>
+      </article>
+      <article class="card">
+        <h3>Chip M2 + R1</h3>
+        <p>Rendimiento ultra rápido y latencia mínima para una sensación completamente natural.</p>
+      </article>
+      <article class="card">
+        <h3>Audio espacial</h3>
+        <p>Sonido que se adapta a tu entorno para una experiencia envolvente y realista.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="reveal">
+      <h2>Todo tu contenido, a gran escala</h2>
+      <p>Disfruta cine, videollamadas y productividad en pantallas virtuales gigantes, en cualquier lugar.</p>
+    </div>
+    <div class="gallery">
+      <img class="reveal" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80" alt="Persona usando tecnología inmersiva" />
+      <img class="reveal" src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=1400&q=80" alt="Experiencia digital avanzada" />
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="reveal">
+      <h2>Empieza una nueva era</h2>
+      <p>Disponible en capacidad de 256 GB. Financiación y entrega rápida en Apple Store.</p>
+      <div class="price">Desde $3,499 USD</div>
+      <button class="btn primary">Comprar Vision Pro</button>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Apple Landing Demo — Proyecto de demostración.
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal, .card');
+    const progressBar = document.getElementById('progress-bar');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    revealElements.forEach((el) => observer.observe(el));
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // efecto parallax suave para imagen principal
+    const product = document.querySelector('.product');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.06;
+      if (product) product.style.transform = `translateY(${Math.min(y, 18)}px)`;
+    });
+  </script>
+</body>
+</html>
