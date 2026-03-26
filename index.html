@@ -3,303 +3,598 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apple Vision Pro | Landing</title>
+  <title>Apple Store Experience | Landing</title>
   <style>
     :root {
-      --bg: #000;
+      --bg: #0a0a0a;
+      --bg-soft: #111214;
+      --surface: rgba(28, 28, 30, 0.7);
       --text: #f5f5f7;
       --muted: #a1a1a6;
+      --line: rgba(255, 255, 255, 0.12);
       --accent: #2997ff;
-      --card: rgba(28, 28, 30, 0.6);
-      --line: rgba(255, 255, 255, 0.08);
+      --success: #30d158;
+      --radius: 22px;
+      --max: 1180px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at top, #1b1b1d 0%, var(--bg) 45%);
       color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, #1f1f21 0%, transparent 35%),
+        radial-gradient(circle at 90% 20%, #101e33 0%, transparent 30%),
+        var(--bg);
       overflow-x: hidden;
     }
 
-    .progress {
+    .scroll-progress {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
       height: 4px;
+      width: 100%;
       z-index: 999;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255,255,255,0.08);
     }
 
-    .progress > span {
+    .scroll-progress span {
       display: block;
-      height: 100%;
       width: 0;
+      height: 100%;
       background: linear-gradient(90deg, #0071e3, #5ac8fa);
-      transition: width 0.1s linear;
+      transition: width .1s linear;
     }
 
     header {
       position: fixed;
       width: 100%;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-      background: rgba(0,0,0,0.55);
+      z-index: 90;
+      backdrop-filter: blur(14px);
+      background: rgba(9, 9, 10, 0.62);
       border-bottom: 1px solid var(--line);
     }
 
-    nav {
-      max-width: 1120px;
+    .nav {
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 14px 20px;
+      padding: 14px 18px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 14px;
     }
 
-    .brand { font-weight: 700; letter-spacing: 0.4px; }
+    .brand { font-weight: 700; letter-spacing: .3px; white-space: nowrap; }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: .92rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: .25s ease;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--line);
+      background: rgba(255,255,255,0.05);
+    }
 
     .btn {
       border: none;
       border-radius: 999px;
-      padding: 10px 20px;
+      padding: 10px 18px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      transition: transform .25s ease, box-shadow .25s ease;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(41, 151, 255, 0.25);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0, 113, 227, 0.25);
     }
 
-    .btn.primary {
-      background: var(--accent);
-      color: white;
-    }
+    .btn.primary { background: var(--accent); color: #fff; }
 
-    section {
+    .section {
+      max-width: var(--max);
       min-height: 100vh;
-      max-width: 1120px;
       margin: 0 auto;
-      padding: 120px 20px 60px;
+      padding: 112px 18px 64px;
       display: grid;
-      align-items: center;
-      gap: 40px;
+      align-content: center;
+      gap: 28px;
     }
 
     .hero {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #d6ecff;
+      background: rgba(41, 151, 255, 0.14);
+      border: 1px solid rgba(41, 151, 255, 0.35);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: .85rem;
+      width: fit-content;
     }
 
     h1 {
-      font-size: clamp(2.2rem, 6vw, 4.8rem);
-      line-height: 1.05;
-      margin-bottom: 16px;
+      font-size: clamp(2.1rem, 5.8vw, 4.5rem);
+      line-height: 1.03;
+      margin: 10px 0 14px;
     }
 
     h2 {
-      font-size: clamp(1.7rem, 4vw, 3.2rem);
-      margin-bottom: 14px;
+      font-size: clamp(1.8rem, 4vw, 3.1rem);
+      line-height: 1.1;
+      margin-bottom: 8px;
     }
 
-    p {
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 1.05rem;
-      max-width: 55ch;
+    p { color: var(--muted); line-height: 1.65; max-width: 65ch; }
+
+    .hero-ctas { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .ghost-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
     }
 
-    .hero-copy p { margin-bottom: 28px; }
+    .hero-visual {
+      display: grid;
+      place-items: center;
+      perspective: 1200px;
+    }
 
-    .product {
-      width: min(100%, 520px);
-      justify-self: center;
-      filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.5));
-      animation: float 4s ease-in-out infinite;
-      transform-origin: center;
+    .hero-visual img {
+      width: min(520px, 100%);
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      box-shadow: 0 32px 80px rgba(0,0,0,.45);
+      transform: rotateY(-12deg) rotateX(5deg);
+      transition: transform .4s ease;
+      animation: float 4.2s ease-in-out infinite;
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
+      0%, 100% { transform: rotateY(-12deg) rotateX(5deg) translateY(0); }
+      50% { transform: rotateY(-9deg) rotateX(4deg) translateY(-10px); }
     }
 
-    .grid-3 {
+    .stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 18px;
+      gap: 14px;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .stat strong { display: block; font-size: 1.55rem; margin-bottom: 4px; }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+
+    .panel-head { display: flex; justify-content: space-between; gap: 10px; align-items: end; flex-wrap: wrap; }
+
+    .products-scroll {
+      margin-top: 10px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .product-item {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      border-radius: 18px;
+      overflow: hidden;
+      max-height: 78px;
+      transition: max-height .65s cubic-bezier(.2,.8,.2,1), border-color .35s ease, background .35s ease;
+    }
+
+    .product-item.active {
+      max-height: 280px;
+      border-color: rgba(41, 151, 255, 0.5);
+      background: rgba(41, 151, 255, 0.07);
+    }
+
+    .product-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px;
+      font-weight: 600;
+    }
+
+    .product-body {
+      padding: 0 22px 24px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .45s ease .1s, transform .45s ease .1s;
+    }
+
+    .product-item.active .product-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 8px;
     }
 
     .card {
-      background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 24px;
-      transform: translateY(40px) scale(0.98);
-      opacity: 0;
-      transition: all 0.8s cubic-bezier(.22,.61,.36,1);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      transition: .25s ease;
     }
 
-    .card h3 {
-      margin-bottom: 8px;
-      font-size: 1.2rem;
+    .card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.32); }
+    .card img { width: 100%; border-radius: 12px; aspect-ratio: 1/1; object-fit: cover; }
+    .chip { font-size: .78rem; color: #d8ecff; background: rgba(41,151,255,0.15); border: 1px solid rgba(41,151,255,.35); border-radius: 999px; padding: 3px 8px; width: fit-content; }
+
+    .config-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
     }
+
+    .option-group {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+
+    .option-group h4 { margin-bottom: 10px; }
+
+    .option-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .9rem;
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .pill.active {
+      border-color: rgba(41,151,255,.6);
+      color: #dff0ff;
+      background: rgba(41,151,255,.18);
+    }
+
+    .summary-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .line { border-top: 1px solid var(--line); }
+    .price { font-size: 2rem; font-weight: 700; color: #fff; }
+    .ok { color: var(--success); font-weight: 600; }
 
     .reveal {
       opacity: 0;
-      transform: translateY(35px);
-      transition: all 0.9s cubic-bezier(.22,.61,.36,1);
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s ease;
     }
 
-    .visible {
-      opacity: 1 !important;
-      transform: translateY(0) scale(1) !important;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      opacity: 0;
-      transform: scale(0.94);
-      transition: all 0.9s ease;
-    }
-
-    .cta {
-      text-align: center;
-      padding-bottom: 120px;
-    }
-
-    .price {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 700;
-      margin: 12px 0 24px;
-      color: #fff;
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     footer {
       border-top: 1px solid var(--line);
-      padding: 26px 20px 40px;
       text-align: center;
       color: var(--muted);
+      padding: 24px 16px 38px;
+      background: rgba(0,0,0,.22);
     }
 
-    @media (max-width: 900px) {
-      .hero, .gallery, .grid-3 { grid-template-columns: 1fr; }
-      section { padding-top: 95px; }
-      .product { max-width: 360px; }
+    @media (max-width: 1020px) {
+      .hero, .config-layout { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .nav { align-items: start; }
+      .nav-links { justify-content: start; }
+      .stats, .grid { grid-template-columns: 1fr; }
+      .section { padding-top: 132px; }
     }
   </style>
 </head>
 <body>
-  <div class="progress"><span id="progress-bar"></span></div>
+  <div class="scroll-progress"><span id="progress"></span></div>
 
   <header>
-    <nav>
-      <div class="brand"> Apple</div>
-      <button class="btn primary">Comprar ahora</button>
+    <nav class="nav">
+      <div class="brand"> Apple Store Pro</div>
+      <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#experiencia">Experiencia</a>
+        <a href="#catalogo">Productos</a>
+        <a href="#configurador">Personaliza</a>
+      </div>
+      <button class="btn primary">Comprar</button>
     </nav>
   </header>
 
-  <section class="hero">
-    <div class="hero-copy reveal">
-      <h1>Vision Pro</h1>
-      <p>
-        El nuevo ordenador espacial de Apple. Una experiencia inmersiva para trabajar, crear y entretenerte como nunca.
-      </p>
-      <button class="btn primary">Reservar</button>
-    </div>
+  <main>
+    <section class="section hero" id="inicio">
+      <div class="reveal">
+        <span class="kicker">Nuevo · Experiencia premium</span>
+        <h1>Una landing de venta Apple más completa y profesional</h1>
+        <p>
+          Explora productos con animaciones al hacer scroll, visualiza todo el catálogo en una sección dedicada
+          y termina en una página de personalización para elegir características antes de comprar.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#catalogo">Ver productos</a>
+          <a class="btn ghost-btn" href="#configurador">Personalizar compra</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1200&q=80" alt="Producto Apple premium" />
+      </div>
+      <div class="stats reveal" style="grid-column: 1/-1;">
+        <div class="stat"><strong>4.9/5</strong><p>Valoración media de clientes.</p></div>
+        <div class="stat"><strong>24h</strong><p>Entrega express en ciudades principales.</p></div>
+        <div class="stat"><strong>0%</strong><p>Financiación promocional disponible.</p></div>
+      </div>
+    </section>
 
-    <img
-      class="product reveal"
-      src="https://www.apple.com/v/apple-vision-pro/a/images/overview/hero/portrait_base__f7xkhuxv92ai_large.jpg"
-      alt="Apple Vision Pro"
-    />
-  </section>
+    <section class="section" id="experiencia">
+      <div class="panel reveal">
+        <div class="panel-head">
+          <div>
+            <h2>Productos que se abren y se cierran según el scroll</h2>
+            <p>Desplázate: la tarjeta visible se expande automáticamente y las demás se contraen.</p>
+          </div>
+          <span class="chip">Scroll Interactivo</span>
+        </div>
 
-  <section>
-    <div class="reveal">
-      <h2>Diseñado para sorprender</h2>
-      <p>Combinación de aluminio, cristal laminado y una interfaz intuitiva con control por ojos, manos y voz.</p>
-    </div>
-    <div class="grid-3">
-      <article class="card">
-        <h3>Micro‑OLED 4K</h3>
-        <p>Más de 23 millones de píxeles para una nitidez espectacular en cada detalle.</p>
-      </article>
-      <article class="card">
-        <h3>Chip M2 + R1</h3>
-        <p>Rendimiento ultra rápido y latencia mínima para una sensación completamente natural.</p>
-      </article>
-      <article class="card">
-        <h3>Audio espacial</h3>
-        <p>Sonido que se adapta a tu entorno para una experiencia envolvente y realista.</p>
-      </article>
-    </div>
-  </section>
+        <div class="products-scroll" id="scrollProducts">
+          <article class="product-item active" data-product="iPhone 17 Pro">
+            <div class="product-head"><span>iPhone 17 Pro</span><span>$1,199</span></div>
+            <div class="product-body">
+              <p>Cámara avanzada, batería optimizada y chip de nueva generación para rendimiento profesional.</p>
+            </div>
+          </article>
+          <article class="product-item" data-product="Apple Watch Ultra">
+            <div class="product-head"><span>Apple Watch Ultra</span><span>$899</span></div>
+            <div class="product-body">
+              <p>Resistencia extrema, GPS de alta precisión y métricas deportivas avanzadas.</p>
+            </div>
+          </article>
+          <article class="product-item" data-product="MacBook Pro M5">
+            <div class="product-head"><span>MacBook Pro M5</span><span>$2,099</span></div>
+            <div class="product-body">
+              <p>Potencia para edición, desarrollo y 3D con pantalla Liquid Retina XDR.</p>
+            </div>
+          </article>
+          <article class="product-item" data-product="Vision Pro">
+            <div class="product-head"><span>Vision Pro</span><span>$3,499</span></div>
+            <div class="product-body">
+              <p>Computación espacial inmersiva para productividad, entretenimiento y comunicación.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <div class="reveal">
-      <h2>Todo tu contenido, a gran escala</h2>
-      <p>Disfruta cine, videollamadas y productividad en pantallas virtuales gigantes, en cualquier lugar.</p>
-    </div>
-    <div class="gallery">
-      <img class="reveal" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80" alt="Persona usando tecnología inmersiva" />
-      <img class="reveal" src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=1400&q=80" alt="Experiencia digital avanzada" />
-    </div>
-  </section>
+    <section class="section" id="catalogo">
+      <div class="panel reveal">
+        <div class="panel-head">
+          <div>
+            <h2>Página de catálogo: todos los productos</h2>
+            <p>Sección tipo tienda para explorar rápidamente el portafolio completo.</p>
+          </div>
+          <span class="chip">Catálogo</span>
+        </div>
 
-  <section class="cta">
-    <div class="reveal">
-      <h2>Empieza una nueva era</h2>
-      <p>Disponible en capacidad de 256 GB. Financiación y entrega rápida en Apple Store.</p>
-      <div class="price">Desde $3,499 USD</div>
-      <button class="btn primary">Comprar Vision Pro</button>
-    </div>
-  </section>
+        <div class="grid">
+          <article class="card"><img src="https://images.unsplash.com/photo-1592286927505-1def25115558?auto=format&fit=crop&w=900&q=80" alt="iPhone" /><h3>iPhone</h3><p>Modelos Pro y estándar con distintos acabados.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1517336714739-489689fd1ca8?auto=format&fit=crop&w=900&q=80" alt="Mac" /><h3>Mac</h3><p>Portátiles y escritorio para trabajo profesional.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1575311373937-040b8e1fd6b0?auto=format&fit=crop&w=900&q=80" alt="iPad" /><h3>iPad</h3><p>Creatividad y productividad con Apple Pencil.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&q=80" alt="Apple Watch" /><h3>Apple Watch</h3><p>Salud, deporte y conectividad diaria.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=900&q=80" alt="AirPods" /><h3>AirPods</h3><p>Audio inmersivo y cancelación activa.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1616578273576-8d9f4f2e7bb0?auto=format&fit=crop&w=900&q=80" alt="Vision" /><h3>Vision</h3><p>Experiencias espaciales de última generación.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=900&q=80" alt="Accesorios" /><h3>Accesorios</h3><p>Fundas, correas, teclados y más.</p></article>
+          <article class="card"><img src="https://images.unsplash.com/photo-1491925474562-1c7c8f3f14e2?auto=format&fit=crop&w=900&q=80" alt="Apple TV" /><h3>Apple TV</h3><p>Streaming 4K y ecosistema conectado.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="configurador">
+      <div class="panel reveal">
+        <div class="panel-head">
+          <div>
+            <h2>Página final: personaliza antes de comprar</h2>
+            <p>Imita el flujo de elección de características con resumen dinámico y precio total.</p>
+          </div>
+          <span class="chip">Configurador</span>
+        </div>
+
+        <div class="config-layout">
+          <div>
+            <div class="option-group" data-option="modelo">
+              <h4>Modelo</h4>
+              <div class="option-row">
+                <button class="pill active" data-group="modelo" data-value="Vision Pro" data-price="3499">Vision Pro</button>
+                <button class="pill" data-group="modelo" data-value="Vision Air" data-price="2899">Vision Air</button>
+              </div>
+            </div>
+
+            <div class="option-group" data-option="almacenamiento">
+              <h4>Almacenamiento</h4>
+              <div class="option-row">
+                <button class="pill active" data-group="storage" data-value="256 GB" data-price="0">256 GB</button>
+                <button class="pill" data-group="storage" data-value="512 GB" data-price="300">512 GB (+$300)</button>
+                <button class="pill" data-group="storage" data-value="1 TB" data-price="700">1 TB (+$700)</button>
+              </div>
+            </div>
+
+            <div class="option-group" data-option="cobertura">
+              <h4>Protección</h4>
+              <div class="option-row">
+                <button class="pill active" data-group="care" data-value="Sin AppleCare+" data-price="0">Sin AppleCare+</button>
+                <button class="pill" data-group="care" data-value="AppleCare+" data-price="249">AppleCare+ (+$249)</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="summary-box">
+            <h4>Tu configuración</h4>
+            <p><strong>Producto:</strong> <span id="sum-model">Vision Pro</span></p>
+            <p><strong>Capacidad:</strong> <span id="sum-storage">256 GB</span></p>
+            <p><strong>Protección:</strong> <span id="sum-care">Sin AppleCare+</span></p>
+            <div class="line"></div>
+            <p class="price" id="sum-price">$3,499</p>
+            <p class="ok">Listo para añadir a la bolsa.</p>
+            <button class="btn primary">Añadir al carrito</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    © 2026 Apple Landing Demo — Proyecto de demostración.
+    © 2026 Demo Apple Store Experience · Landing avanzada en un solo archivo HTML.
   </footer>
 
   <script>
-    const revealElements = document.querySelectorAll('.reveal, .card');
-    const progressBar = document.getElementById('progress-bar');
+    const progress = document.getElementById('progress');
+    const revealElements = document.querySelectorAll('.reveal');
+    const productItems = [...document.querySelectorAll('.product-item')];
+    const pills = [...document.querySelectorAll('.pill')];
 
-    const observer = new IntersectionObserver((entries) => {
+    // Barra de progreso de scroll
+    window.addEventListener('scroll', () => {
+      const top = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = (top / height) * 100;
+      progress.style.width = `${ratio}%`;
+    });
+
+    // Animaciones de entrada
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
 
-    revealElements.forEach((el) => observer.observe(el));
+    revealElements.forEach(el => revealObserver.observe(el));
 
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      progressBar.style.width = progress + '%';
+    // Productos que se abren/cierra según scroll
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          productItems.forEach(item => item.classList.remove('active'));
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.6,
+      rootMargin: '-10% 0px -20% 0px'
     });
 
-    // efecto parallax suave para imagen principal
-    const product = document.querySelector('.product');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY * 0.06;
-      if (product) product.style.transform = `translateY(${Math.min(y, 18)}px)`;
+    productItems.forEach(item => scrollObserver.observe(item));
+
+    // Configurador
+    const summary = {
+      model: document.getElementById('sum-model'),
+      storage: document.getElementById('sum-storage'),
+      care: document.getElementById('sum-care'),
+      price: document.getElementById('sum-price')
+    };
+
+    const state = {
+      model: { value: 'Vision Pro', price: 3499 },
+      storage: { value: '256 GB', price: 0 },
+      care: { value: 'Sin AppleCare+', price: 0 }
+    };
+
+    const formatPrice = (n) => `$${n.toLocaleString('en-US')}`;
+
+    function renderSummary() {
+      const total = state.model.price + state.storage.price + state.care.price;
+      summary.model.textContent = state.model.value;
+      summary.storage.textContent = state.storage.value;
+      summary.care.textContent = state.care.value;
+      summary.price.textContent = formatPrice(total);
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const group = pill.dataset.group;
+        const value = pill.dataset.value;
+        const price = Number(pill.dataset.price || 0);
+
+        pills
+          .filter(btn => btn.dataset.group === group)
+          .forEach(btn => btn.classList.remove('active'));
+
+        pill.classList.add('active');
+
+        if (group === 'modelo') state.model = { value, price };
+        if (group === 'storage') state.storage = { value, price };
+        if (group === 'care') state.care = { value, price };
+
+        renderSummary();
+      });
     });
+
+    renderSummary();
   </script>
 </body>
 </html>
